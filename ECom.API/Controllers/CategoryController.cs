@@ -1,4 +1,6 @@
-﻿using ECom.Core.DTOs;
+﻿using AutoMapper;
+using ECom.Core.DTOs;
+using ECom.Core.Entities;
 using ECom.Core.Interfaces;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
@@ -6,9 +8,10 @@ using Microsoft.AspNetCore.Mvc;
 namespace ECom.API.Controllers;
 [Route("api/[controller]")]
 [ApiController]
-public class CategoryController(IUnitOfWork unitOfWork) : ControllerBase
+public class CategoryController(IUnitOfWork unitOfWork,IMapper mapper) : ControllerBase
 {
     private readonly IUnitOfWork _unitOfWork = unitOfWork;
+    private readonly IMapper _mapper = mapper;
 
     [HttpGet]
     public async Task<IActionResult> GetallAsync()
@@ -37,11 +40,7 @@ public class CategoryController(IUnitOfWork unitOfWork) : ControllerBase
         if (categoryDto is null)
             return BadRequest();
 
-        var category = new Core.Entities.Category
-        {
-            Name = categoryDto.Name,
-            Description = categoryDto.Description
-        };
+        var category = _mapper.Map<Category>(categoryDto);
 
         await _unitOfWork.CategoryRepositry.AddAsync(category);
         await _unitOfWork.CategoryRepositry.SaveChangesAsync();
@@ -59,9 +58,8 @@ public class CategoryController(IUnitOfWork unitOfWork) : ControllerBase
 
         if (category is null)
             return NotFound();
-
-        category.Name = categoryDto.Name;
-        category.Description = categoryDto.Description;
+         
+        _mapper.Map(categoryDto,category);
 
         await _unitOfWork.CategoryRepositry.UpdateAsync(category);
         await _unitOfWork.CategoryRepositry.SaveChangesAsync();
