@@ -1,8 +1,4 @@
-﻿using AutoMapper;
-using ECom.Core.DTOs;
-using ECom.Core.Entities;
-using ECom.Core.Interfaces;
-using Microsoft.AspNetCore.Http;
+﻿using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 
 namespace ECom.API.Controllers;

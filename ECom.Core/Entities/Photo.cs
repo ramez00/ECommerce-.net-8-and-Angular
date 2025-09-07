@@ -7,5 +7,4 @@ public class Photo : BaseEntity<int>
     public string PublicId { get; set; } = string.Empty;
     public bool IsMain { get; set; }
     public int ProductId { get; set; }
-    public Product? Product { get; set; }
 }
