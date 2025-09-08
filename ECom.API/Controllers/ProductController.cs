@@ -17,7 +17,22 @@ public class ProductController(IUnitOfWork unitOfWork,IMapper mapper) : Controll
         if (allProducts is null)
             return NotFound();
 
-        return Ok(allProducts);
+        var productDto = _mapper.Map<List<ProductDto>>(allProducts);
+
+        return Ok(productDto);
+    }
+
+    [HttpGet("get-by-id/{id}")]
+    public async Task<IActionResult> GetByIdAsync(int id)
+    {
+        var product = await _unitOfWork.ProductRepositry.GetByIdAsync(id, p => p.Category);
+
+        if (product is null)
+            return NotFound();
+        
+       var productDto = _mapper.Map<ProductDto>(product);
+
+        return Ok(productDto);
     }
 
     [HttpPost]
@@ -58,6 +73,21 @@ public class ProductController(IUnitOfWork unitOfWork,IMapper mapper) : Controll
             return NotFound();
 
         product.CategoryId = newCategoryId;
+        await _unitOfWork.ProductRepositry.UpdateAsync(product);
+        //await _unitOfWork.ProductRepositry.SaveChangesAsync();
+        return NoContent();
+    }
+
+    [HttpPatch("Chaneg-Stock-quantity")]
+    public async Task<IActionResult> ChangeProductStock(int productId,int Stock)
+    {
+        var product = await _unitOfWork.ProductRepositry.GetByIdAsync(productId);
+
+        if (product is null)
+            return NotFound();
+
+        product.StockQuantity = Stock;
+
         await _unitOfWork.ProductRepositry.UpdateAsync(product);
         //await _unitOfWork.ProductRepositry.SaveChangesAsync();
         return NoContent();

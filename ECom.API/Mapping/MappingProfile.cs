@@ -10,7 +10,8 @@ public class MappingProfile : Profile
 
        
         CreateMap<Product, ProductDto>()
-            //.ForMember(dest => dest.Category.Name, opt => opt.MapFrom(src => src.Category.Name))
+            .ForMember(dest => dest.CategoryName, opt => opt.MapFrom(src => src.Category.Name))
+            .ForMember(dest => dest.Stock, opt => opt.MapFrom(src => src.StockQuantity))
             .ReverseMap();
     }
 }

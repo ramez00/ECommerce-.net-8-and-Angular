@@ -15,5 +15,7 @@ public class ProductConfig : IEntityTypeConfiguration<Product>
             .IsRequired()
             .HasColumnType("decimal(18,2)");
 
+        builder.Property(p => p.OldPrice)
+            .HasColumnType("decimal(18,2)");
     }
 }

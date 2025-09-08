@@ -1,4 +1,5 @@
 using ECom.API.Mapping;
+using ECom.Core.Services;
 using ECom.Infrastructure;
 using Microsoft.Extensions.DependencyInjection;
 using System.Reflection;
@@ -12,6 +13,8 @@ builder.Services.AddControllers();
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
+
+builder.Services.AddScoped<IImageService, ImageService>();
 
 builder.Services.AddAutoMapper(Assembly.GetAssembly(typeof(MappingProfile)));
 
